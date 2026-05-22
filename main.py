@@ -59,23 +59,30 @@ class ModelManager:
         self.load_all_models()
     
     def load_all_models(self):
-        """Load all classifiers"""
+        """Load classifiers, scaling down on CPU to guarantee fitting under the 512MB RAM limit on Render Free Tier"""
         try:
             logger.info("[LOAD] Loading ML models...")
             from transformers import pipeline
+            import torch
             
-            # 1. Zero-Shot Text Classifier (Used for Hate Speech, Toxicity, Violence, Misinfo, Spam)
+            # Reduce thread overhead to conserve RAM
+            torch.set_num_threads(1)
+            
+            # 1. Zero-Shot Text Classifier
+            # Use extremely optimized 260MB DistilBERT on CPU (saves 1.4GB RAM vs BART-large!)
             try:
+                model_name = "facebook/bart-large-mnli" if self.device == "cuda" else "typeform/distilbert-base-uncased-mnli"
+                logger.info(f"[LOAD] Loading zero-shot model: {model_name}")
                 self.models['zero_shot'] = pipeline(
                     "zero-shot-classification",
-                    model="facebook/bart-large-mnli",
+                    model=model_name,
                     device=0 if self.device == "cuda" else -1
                 )
                 logger.info("[OK] Zero-shot text classifier loaded")
             except Exception as e:
                 logger.warning(f"[WARN] Zero-shot text model failed: {e}")
             
-            # 2. NSFW Image Detection (Falconsai)
+            # 2. NSFW Image Detection (Falconsai - extremely lightweight ~80MB)
             try:
                 self.models['nsfw_image'] = pipeline(
                     "image-classification",
@@ -86,52 +93,55 @@ class ModelManager:
             except Exception as e:
                 logger.warning(f"[WARN] NSFW image model (Falconsai) failed: {e}")
             
-            # 3. Robust NSFW Image Detection (AdamCodd)
-            try:
-                self.models['nsfw_image_robust'] = pipeline(
-                    "image-classification",
-                    model="AdamCodd/vit-base-nsfw-detector",
-                    device=0 if self.device == "cuda" else -1
-                )
-                logger.info("[OK] Robust NSFW image classifier (AdamCodd) loaded")
-            except Exception as e:
-                logger.warning(f"[WARN] Robust NSFW image model (AdamCodd) failed: {e}")
+            # Only load remaining heavy classifiers on GPU/CUDA to prevent OOM crashes on free hosting
+            if self.device == "cuda":
+                # 3. Robust NSFW Image Detection (AdamCodd - ~340MB)
+                try:
+                    self.models['nsfw_image_robust'] = pipeline(
+                        "image-classification",
+                        model="AdamCodd/vit-base-nsfw-detector",
+                        device=0 if self.device == "cuda" else -1
+                    )
+                    logger.info("[OK] Robust NSFW image classifier loaded")
+                except Exception as e:
+                    logger.warning(f"[WARN] Robust NSFW image model failed: {e}")
 
-            # 4. ToxicBERT — Multi-label toxicity (fine-tuned on Jigsaw dataset)
-            # Detects: toxic, severe_toxic, obscene (profanity), threat (violence), insult (cyberbullying), identity_hate
-            try:
-                self.models['toxic_bert'] = pipeline(
-                    "text-classification",
-                    model="unitary/toxic-bert",
-                    top_k=None,
-                    device=0 if self.device == "cuda" else -1
-                )
-                logger.info("[OK] ToxicBERT multi-label classifier loaded")
-            except Exception as e:
-                logger.warning(f"[WARN] ToxicBERT failed: {e}")
+                # 4. ToxicBERT (~430MB)
+                try:
+                    self.models['toxic_bert'] = pipeline(
+                        "text-classification",
+                        model="unitary/toxic-bert",
+                        top_k=None,
+                        device=0 if self.device == "cuda" else -1
+                    )
+                    logger.info("[OK] ToxicBERT multi-label classifier loaded")
+                except Exception as e:
+                    logger.warning(f"[WARN] ToxicBERT failed: {e}")
 
-            # 5. DeHateBERT — Dedicated hate speech detection
-            try:
-                self.models['hate_classifier'] = pipeline(
-                    "text-classification",
-                    model="Hate-speech-CNERG/dehatebert-mono-english",
-                    device=0 if self.device == "cuda" else -1
-                )
-                logger.info("[OK] DeHateBERT hate speech classifier loaded")
-            except Exception as e:
-                logger.warning(f"[WARN] DeHateBERT failed: {e}")
+                # 5. DeHateBERT (~430MB)
+                try:
+                    self.models['hate_classifier'] = pipeline(
+                        "text-classification",
+                        model="Hate-speech-CNERG/dehatebert-mono-english",
+                        device=0 if self.device == "cuda" else -1
+                    )
+                    logger.info("[OK] DeHateBERT loaded")
+                except Exception as e:
+                    logger.warning(f"[WARN] DeHateBERT failed: {e}")
 
-            # 6. NSFW Text Classifier — Explicit sexual content in text
-            try:
-                self.models['nsfw_text'] = pipeline(
-                    "text-classification",
-                    model="michellejieli/NSFW_text_classifier",
-                    device=0 if self.device == "cuda" else -1
-                )
-                logger.info("[OK] NSFW text classifier loaded")
-            except Exception as e:
-                logger.warning(f"[WARN] NSFW text classifier failed: {e}")
-
+                # 6. NSFW Text Classifier (~270MB)
+                try:
+                    self.models['nsfw_text'] = pipeline(
+                        "text-classification",
+                        model="michellejieli/NSFW_text_classifier",
+                        device=0 if self.device == "cuda" else -1
+                    )
+                    logger.info("[OK] NSFW text classifier loaded")
+                except Exception as e:
+                    logger.warning(f"[WARN] NSFW text classifier failed: {e}")
+            else:
+                logger.info("[INFO] CPU Mode detected. Skipped heavy classifiers to fit 512MB RAM limit successfully.")
+            
             logger.info(f"[OK] All models loaded! Total: {len(self.models)}")
             
         except Exception as e:
@@ -320,6 +330,39 @@ def moderate_text(text: str, enabled_models: Optional[List[str]] = None) -> Dict
                 "pseudoscience":  ["healing crystals", "vaccines cause autism", "bleach cure", "miracle mineral"],
                 "copyright":      ["free download", "crack", "torrent", "leaked", "pirated", "watch online free"],
             }
+
+            # Dynamic Fallback: if dedicated models are not loaded (e.g. on CPU), run zero-shot for them!
+            fallback_mappings = {
+                "hate_speech": {
+                    "labels": ["hate speech, racism, slurs, or supremacy", "peaceful and respectful", "neutral topic"],
+                    "keywords": ["hate", "racist", "slur", "supremacy", "nazi", "bigot", "inferior"]
+                },
+                "toxicity": {
+                    "labels": ["toxic comment, insult, rude behavior, or toxicity", "polite and friendly", "neutral topic"],
+                    "keywords": ["stupid", "idiot", "dumb", "bitch", "fuck", "shit", "asshole", "loser", "pathetic"]
+                },
+                "violence": {
+                    "labels": ["violence, threat of harm, or physically dangerous", "peaceful and harmless", "neutral topic"],
+                    "keywords": ["kill", "murder", "attack", "shoot", "bomb", "slaughter", "assassinate"]
+                },
+                "cyberbullying": {
+                    "labels": ["targeted harassment, bullying, or doxxing", "kind and helpful", "neutral topic"],
+                    "keywords": ["doxx", "bully", "harass", "dox", "find you", "cancel"]
+                },
+                "profanity": {
+                    "labels": ["profanity, swearing, or vulgar language", "clean and professional language", "neutral topic"],
+                    "keywords": ["fuck", "shit", "damn", "bitch", "cunt", "dick", "bastard"]
+                },
+                "sexual_content": {
+                    "labels": ["explicit sexual content, adult erotica, or NSFW text", "clean and safe for work", "neutral topic"],
+                    "keywords": ["porn", "sex", "erotica", "nsfw", "naked", "xxx", "aroused"]
+                }
+            }
+
+            for key, config in fallback_mappings.items():
+                if key not in results:
+                    zs_categories[key] = config["labels"]
+                    zs_trigger_kw[key] = config["keywords"]
 
             for key, labels in zs_categories.items():
                 if enabled_models is not None and key not in enabled_models:
