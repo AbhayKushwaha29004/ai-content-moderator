@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#667eea" />
+  <meta
+    name="description"
+    content="Content Moderation AI - Advanced content safety detection system with 6 ML classifiers"
+  />
+  <meta name="keywords" content="content moderation, AI, safety, machine learning" />
+  <meta name="author" content="Abhay Kushwaha" />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🛡️</text></svg>" />
+  
+  <!-- Title -->
+  <title>Content Moderation AI - Advanced Safety Detection</title>
+  
+  <!-- Preconnect to External Resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  
+  <!-- Open Graph Meta Tags (for social sharing) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Content Moderation AI" />
+  <meta property="og:description" content="Advanced AI-powered content moderation with 6 classifiers" />
+  <meta property="og:image" content="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'><rect fill='%23667eea' width='1200' height='630'/><text x='50%' y='50%' font-size='100' fill='white' text-anchor='middle' dominant-baseline='middle'>Content Moderation AI</text></svg>" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Content Moderation AI" />
+  <meta name="twitter:description" content="Advanced AI-powered content moderation system" />
+  
+  <!-- Security Headers (inline for static HTML) -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;" />
+  
+  <!-- Google Identity Services (GSI) Client -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  
+  <!-- Loading Styles -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+    }
+
+    #root {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Loading Screen */
+    .loading-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-size: 18px;
+    }
+
+    .loading-spinner {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-weight: 600;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* No JavaScript Warning */
+    noscript {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      font-size: 18px;
+      padding: 20px;
+      text-align: center;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- No JavaScript Warning -->
+  <noscript>
+    <div style="background: #f8d7da; color: #721c24; padding: 2rem; text-align: center; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <h1 style="margin-bottom: 1rem;">⚠️ JavaScript Required</h1>
+      <p style="font-size: 1.1rem; margin-bottom: 1rem;">This application requires JavaScript to be enabled.</p>
+      <p>Please enable JavaScript in your browser settings and refresh the page.</p>
+      <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;">If you continue to have issues, please contact support.</p>
+    </div>
+  </noscript>
+
+  <!-- React Root -->
+  <div id="root">
+    <!-- Loading Screen shown while React loads -->
+    <div class="loading-screen">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Loading Content Moderation AI...</div>
+    </div>
+  </div>
+
+  <!-- React App Script -->
+  <!-- This will be injected by React when it starts -->
+  
+  <!-- Footer for debugging (optional) -->
+  <script>
+    // Log app initialization
+    console.log('%c🛡️ Content Moderation AI', 'font-size: 20px; color: #667eea; font-weight: bold;');
+    console.log('%cInitializing application...', 'color: #666; font-size: 14px;');
+    
+    // Check API connectivity
+    window.addEventListener('load', function() {
+      console.log('%cApp loaded successfully!', 'color: #28a745; font-weight: bold;');
+    });
+
+    // Handle errors
+    window.addEventListener('error', function(event) {
+      console.error('%c❌ Error:', 'color: #dc3545;', event.error);
+    });
+
+    // Warn if API not available
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      console.warn('%c⚠️ Local Development Mode', 'color: #ffc107; font-weight: bold;');
+      console.warn('Make sure backend is running on http://localhost:8000');
+    }
+  </script>
+</body>
+
+</html>

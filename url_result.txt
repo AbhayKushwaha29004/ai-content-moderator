@@ -1,0 +1,18 @@
+Status: FLAGGED
+Text extracted: 364 chars
+
+[SAFE]    copyright              0.0%  Safe (0.0%). No evidence of copyright infringement, piracy, or leaked content.
+[SAFE]    cyberbullying          0.0%  Safe (0.0%). No evidence of cyberbullying.
+[SAFE]    defamation             0.0%  Safe (0.0%). No evidence of defamation, slander, or libel.
+[SAFE]    extremism              0.0%  Safe (0.0%). No evidence of terrorism, extremism, or radicalization.
+[SAFE]    hate_speech            0.0%  Safe (0.0%). No evidence of hate speech.
+[SAFE]    hate_symbols           0.0%  Safe (0.0%). No evidence of hate group symbols or fascist imagery references.
+[SAFE]    misinformation         0.0%  Safe (0.0%). No evidence of false, misleading, or conspiracy theory.
+[SAFE]    phishing               0.0%  Safe (0.0%). No evidence of phishing, scam, or credential theft.
+[SAFE]    profanity              0.0%  Safe (0.0%). No evidence of profanity.
+[SAFE]    pseudoscience          0.0%  Safe (0.0%). No evidence of pseudoscience, health misinformation, or quackery.
+[SAFE]    self_harm              0.0%  Safe (0.0%). No evidence of self-harm, suicide, or suicidal ideation.
+[SAFE]    sexual_content        82.7%  Safe (82.7%). No clear NSFW content in page text.
+[SAFE]    spam                   0.0%  Safe (0.0%). No evidence of spam, promotional, or repetitive marketing.
+[SAFE]    toxicity               0.0%  Safe (0.0%). No evidence of toxicity.
+[SAFE]    violence               0.0%  Safe (0.0%). No evidence of violence.
