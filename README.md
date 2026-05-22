@@ -1,3 +1,13 @@
+---
+title: AI Content Moderator
+emoji: 🛡️
+colorFrom: red
+colorTo: blue
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # 🛡️ Content Moderation AI
 
 A production-ready content moderation system with 6 specialized classifiers for detecting violence, adult content, hate speech, self-harm, misinformation, and child safety risks.
