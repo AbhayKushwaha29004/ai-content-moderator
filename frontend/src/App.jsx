@@ -3,7 +3,7 @@ import axios from 'axios';
 import html2pdf from 'html2pdf.js';
 import './App.css';
 
-const API = 'https://twelve-bars-relate.loca.lt';
+const API = '';
 
 const AVATARS = [
   { id: 1, char: '🦊', label: 'Neon Fox', bg: 'linear-gradient(135deg, #ff6b6b, #ff8e53)' },
@@ -24,7 +24,7 @@ const AVATARS = [
   { id: 16, char: '🐺', label: 'Midnight Wolf', bg: 'linear-gradient(135deg, #e8f4fd, #1c7ed6)' },
 ];
 
-const GOOGLE_CLIENT_ID = "889169728880-cmvg520dv4nlf5tgimcpsrl78ldom54v.apps.googleusercontent.com"; // Standard client ID for localhost/web domains
+const GOOGLE_CLIENT_ID = "1074415814529-g4b3ltd1k2qff29lhq3j3g9tfg92n3pl.apps.googleusercontent.com"; // Standard client ID for localhost/web domains
 const USE_REAL_GOOGLE_LOGIN = false; // Set to true after deploying to enable actual Google login popup
 
 const ADMIN_EMAILS = [
