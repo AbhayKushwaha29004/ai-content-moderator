@@ -271,6 +271,28 @@ def moderate_text(text: str, enabled_models: Optional[List[str]] = None) -> Dict
                     label = res[0]['label'].upper()
                     raw_score = res[0]['score']
                     nsfw_score = raw_score if label == 'NSFW' else (1.0 - raw_score)
+                    
+                    # Prevent false positives on professional documents (like Resumes/CVs) and check for actual explicit keywords
+                    explicit_keywords = [
+                        "porn", "xxx", "nude", "naked", "sexy", "erotic", "penis", "vagina", 
+                        "orgasm", "clitoris", "semen", "sperm", "prostitute", "escort", "breast", "pussy",
+                        "dick", "cock", "adult content", "sexual", "intercourse", "nsfw"
+                    ]
+                    professional_keywords = [
+                        "resume", "cv", "curriculum vitae", "experience", "education", "projects", 
+                        "skills", "university", "technologies", "achievement", "certifications", 
+                        "python", "javascript", "react", "fastapi", "developer", "engineer", "intern", 
+                        "github", "linkedin", "contact", "email", "address", "phone"
+                    ]
+                    
+                    has_explicit = any(w in lower_text for w in explicit_keywords)
+                    has_professional = any(w in lower_text for w in professional_keywords)
+                    
+                    # Override if flagged as NSFW but lacks explicit words or has clear professional keywords
+                    if nsfw_score > 0.4 and not has_explicit:
+                        if has_professional or nsfw_score < 0.85:
+                            nsfw_score = 0.08  # Override to safe
+                    
                     clean_score = 0.0 if nsfw_score <= 0.3 else nsfw_score
 
                     if nsfw_score > 0.5:
