@@ -610,7 +610,7 @@ function App() {
       id: data.submission_id || Date.now(),
       content_type: type,
       created_at: new Date().toISOString(),
-      status: data.overall_status || 'Processed',
+      status: data.status || data.overall_status || 'Processed',
       results: data
     };
 
@@ -706,6 +706,25 @@ function App() {
     document.body.classList.toggle('dark-mode', !isLightMode); 
     document.body.classList.toggle('light-mode', isLightMode);
   }, [isLightMode]);
+  useEffect(() => {
+    if (!currentUser || !currentUser.email) return;
+    const historyKey = 'history_' + currentUser.email;
+    const userHistory = JSON.parse(localStorage.getItem(historyKey) || '[]');
+    let migrated = false;
+    userHistory.forEach(s => {
+      if ((s.status === 'Processed' || !s.status) && s.results) {
+        const actualStatus = s.results.status || s.results.overall_status;
+        if (actualStatus) {
+          s.status = actualStatus;
+          migrated = true;
+        }
+      }
+    });
+    if (migrated) {
+      localStorage.setItem(historyKey, JSON.stringify(userHistory));
+      setSubmissions(userHistory);
+    }
+  }, [currentUser]);
   useEffect(() => {
     if (currentUser?.isAdmin && tab === 'admin') {
       fetchAllRegisteredUsers();
