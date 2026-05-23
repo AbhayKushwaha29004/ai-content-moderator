@@ -25,7 +25,7 @@ const AVATARS = [
 ];
 
 const GOOGLE_CLIENT_ID = "1074415814529-g4b3ltd1k2qff29lhq3j3g9tfg92n3pl.apps.googleusercontent.com"; // Standard client ID for localhost/web domains
-const USE_REAL_GOOGLE_LOGIN = false; // Set to true after deploying to enable actual Google login popup
+const USE_REAL_GOOGLE_LOGIN = true; // Set to true after deploying to enable actual Google login popup
 
 const ADMIN_EMAILS = [
   'kushwahaabhay828@gmail.com',
