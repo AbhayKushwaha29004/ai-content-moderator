@@ -12,7 +12,7 @@ WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    libsm6 libxext6 libxrender-dev \
+    libsm6 libxext6 libxrender-dev ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy Python packages from builder
