@@ -1232,7 +1232,30 @@ function App() {
             </button>
           ))}
         </div>
-        <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', position: 'relative' }}>
+        <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', position: 'relative' }}>
+          {/* Theme Toggle Button */}
+          <button 
+            className="theme-toggle-btn"
+            onClick={() => setIsLightMode(!isLightMode)}
+            style={{
+              background: 'var(--card)',
+              border: '1px solid var(--gb)',
+              borderRadius: '50%',
+              width: '38px',
+              height: '38px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              marginRight: '12px',
+              fontSize: '1.1rem',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+              transition: 'all 0.3s ease'
+            }}
+            title={isLightMode ? "Switch to Dark Mode" : "Switch to Light Mode"}
+          >
+            {isLightMode ? '🌙' : '☀️'}
+          </button>
           <div className="profile-container" style={{ position: 'relative', top: 'auto', right: 'auto' }}>
             <div className="profile-avatar" 
                  onClick={() => setShowProfileMenu(!showProfileMenu)}
