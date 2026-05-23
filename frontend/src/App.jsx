@@ -3,7 +3,7 @@ import axios from 'axios';
 import html2pdf from 'html2pdf.js';
 import './App.css';
 
-const API = '';
+const API = 'https://demonicade-ai-content-moderator.hf.space';
 
 const AVATARS = [
   { id: 1, char: '🦊', label: 'Neon Fox', bg: 'linear-gradient(135deg, #ff6b6b, #ff8e53)' },
