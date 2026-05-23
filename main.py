@@ -686,8 +686,8 @@ async def moderate_video_endpoint(
             total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
             fps = cap.get(cv2.CAP_PROP_FPS) or 30
             duration = total_frames / fps if fps > 0 else 0
-            # Sample 1 frame every 1.5 seconds, min 10 frames and max 30 frames for full coverage
-            num_samples = min(30, max(10, int(duration / 1.5)))
+            # Sample 1 frame every 3 seconds, min 6 frames and max 12 frames for optimal CPU performance
+            num_samples = min(12, max(6, int(duration / 3.0)))
             num_samples = min(num_samples, max(1, total_frames))
             indices = [int(i * total_frames / num_samples) for i in range(num_samples)]
 
