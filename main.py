@@ -68,7 +68,7 @@ class ModelManager:
             try:
                 self.models['zero_shot'] = pipeline(
                     "zero-shot-classification",
-                    model="facebook/bart-large-mnli",
+                    model="typeform/distilbart-base-uncased-mnli",
                     device=0 if self.device == "cuda" else -1
                 )
                 logger.info("[OK] Zero-shot text classifier loaded")
