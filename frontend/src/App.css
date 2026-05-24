@@ -336,3 +336,208 @@ body.dark-mode .navbar {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   backdrop-filter: blur(20px) !important;
 }
+
+/* ==========================================================================
+   MOBILE RESPONSIVE ENHANCEMENTS
+   ========================================================================== */
+
+/* Fix login/signup page scrolling on small screens */
+.landing-container {
+  min-height: 100vh !important;
+  height: auto !important;
+  overflow-y: auto !important;
+  padding: 20px !important;
+}
+
+/* Auth box mobile optimization */
+@media (max-width: 480px) {
+  .auth-box, .modern-auth {
+    padding: 24px 18px !important;
+    margin: 10px !important;
+    max-width: 100% !important;
+    border-radius: 16px !important;
+  }
+
+  .auth-box h2 {
+    font-size: 1.25rem !important;
+  }
+
+  .auth-logo {
+    font-size: 2.2rem !important;
+  }
+
+  .auth-form input {
+    padding: 12px 14px !important;
+    font-size: 0.88rem !important;
+  }
+
+  .auth-form label {
+    font-size: 0.75rem !important;
+  }
+
+  /* Stack name fields vertically on mobile */
+  .auth-box .form-group div[style*="display: flex"][style*="gap"] {
+    flex-direction: column !important;
+  }
+
+  /* Navbar mobile fixes */
+  .navbar {
+    padding: 8px 12px !important;
+    gap: 4px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .nav-link {
+    font-size: 0.7rem !important;
+    padding: 6px 10px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Theme toggle button mobile */
+  .theme-toggle-btn {
+    width: 32px !important;
+    height: 32px !important;
+    margin-right: 6px !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Profile avatar mobile */
+  .profile-avatar {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 14px !important;
+  }
+
+  /* Header mobile */
+  .header {
+    padding: 20px 16px 16px !important;
+  }
+
+  .header h1 {
+    font-size: 1.3rem !important;
+  }
+
+  .header p {
+    font-size: 0.82rem !important;
+  }
+
+  /* Cards mobile */
+  .card {
+    padding: 20px 16px !important;
+    border-radius: 16px !important;
+  }
+
+  /* Stats grid mobile */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .stat-card {
+    padding: 16px 12px !important;
+  }
+
+  /* Dashboard metric cards */
+  .stat-number {
+    font-size: 1.4rem !important;
+  }
+
+  /* Quick actions mobile */
+  .quick-actions {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .qa-card {
+    padding: 20px 12px !important;
+  }
+
+  .qa-icon {
+    font-size: 1.8rem !important;
+  }
+
+  /* Results classifier grid */
+  .classifiers-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* Profile dropdown */
+  .profile-dropdown {
+    right: -10px !important;
+    min-width: 180px !important;
+  }
+
+  /* Settings modal mobile */
+  .settings-modal {
+    width: 95% !important;
+    height: 90vh !important;
+    flex-direction: column !important;
+  }
+
+  .settings-sidebar {
+    width: 100% !important;
+    max-height: 120px !important;
+    overflow-x: auto !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--gb) !important;
+  }
+
+  .settings-sidebar ul {
+    display: flex !important;
+    gap: 6px !important;
+  }
+
+  .settings-sidebar li {
+    white-space: nowrap !important;
+    padding: 8px 12px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Table mobile */
+  .table-header, .table-row {
+    grid-template-columns: 60px 70px 1fr 60px !important;
+    font-size: 0.7rem !important;
+    padding: 8px !important;
+  }
+
+  .col-date {
+    display: none !important;
+  }
+
+  /* Main content padding */
+  .main-content {
+    padding: 16px 12px !important;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 16px 12px !important;
+  }
+}
+
+/* Tablet responsive (768px) enhancements */
+@media (max-width: 768px) {
+  .landing-container {
+    padding: 16px !important;
+  }
+
+  .auth-box {
+    max-width: 90% !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .settings-modal {
+    width: 95% !important;
+    flex-direction: column !important;
+  }
+}
+
