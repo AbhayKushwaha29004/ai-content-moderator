@@ -24,7 +24,7 @@ const AVATARS = [
   { id: 16, char: '🐺', label: 'Midnight Wolf', bg: 'linear-gradient(135deg, #e8f4fd, #1c7ed6)' },
 ];
 
-const GOOGLE_CLIENT_ID = "1074415814529-g4b3ltd1k2qff29lhq3j3g9tfg92n3pl.apps.googleusercontent.com"; // Standard client ID for localhost/web domains
+const GOOGLE_CLIENT_ID = "889169728880-cmvg520dv4nlf5tgimcpsrl78ldom54v.apps.googleusercontent.com"; // Production client ID with Vercel domain authorized
 const USE_REAL_GOOGLE_LOGIN = true; // Set to true after deploying to enable actual Google login popup
 
 const ADMIN_EMAILS = [
